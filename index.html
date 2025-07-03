@@ -21,24 +21,30 @@
             background: #f8f9fa; 
             border-left: 4px solid #3498db;
         }
+        #countdown {
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
     <h1>Question sur mon stage</h1>
     <form id="quiz">
-        <p><strong>Quelle piste vous semble la bonne ?</strong></p>
+        <p><strong>Quelle tâche était la plus importante durant mon stage ?</strong></p>
         <input type="radio" name="q1" id="r1" value="A"> 
-        <label for="r1">Vent nul = pression atmosphérique</label><br>
+        <label for="r1">Analyse de données</label><br>
         
         <input type="radio" name="q1" id="r2" value="B"> 
-        <label for="r2">Courbe théorique autour d'un cylindre</label><br>
+        <label for="r2">Présentation clients</label><br>
         
         <input type="radio" name="q1" id="r3" value="C"> 
-        <label for="r3">Corrélation pression-température : compensation thermique</label><br><br>
+        <label for="r3">Gestion de projet</label><br><br>
         
         <button type="button" onclick="validate()">Valider</button>
     </form>
 
+    <div id="countdown"></div> <!-- Compte à rebours -->
     <div id="correction">
         <p><strong>Réponse correcte : <span id="bonne-reponse">Analyse de données</span></strong></p>
         <p id="feedback"></p>
@@ -47,25 +53,44 @@
     <script>
         function validate() {
             // Désactive les boutons après validation
-            document.querySelectorAll('input[type="radio"]').forEach(input => {
+            const radioButtons = document.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(input => {
                 input.disabled = true;
             });
+            
+            // Désactive le bouton Valider
+            document.querySelector('button').disabled = true;
             
             // Affiche un message temporaire
             alert("Merci pour votre réponse ! La correction s'affichera dans 30 secondes.");
             
-            // Affiche la correction après 30 secondes
-            setTimeout(() => {
-                document.getElementById("correction").style.display = "block";
+            // Lance le compte à rebours
+            let timeLeft = 30;
+            const countdownElement = document.getElementById("countdown");
+            countdownElement.textContent = `Correction dans... ${timeLeft} secondes`;
+            
+            const countdownInterval = setInterval(() => {
+                timeLeft--;
+                countdownElement.textContent = `Correction dans... ${timeLeft} secondes`;
                 
-                // Affiche un feedback personnalisé selon la réponse
-                const selected = document.querySelector('input[name="q1"]:checked');
-                if (selected && selected.value === "A") {
-                    document.getElementById("feedback").innerHTML = "Bravo, c'est correct ! 🎉";
-                } else {
-                    document.getElementById("feedback").innerHTML = "Presque ! J'ai surtout travaillé sur l'analyse.";
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    showCorrection();
                 }
-            }, 30000); // 30 000 ms = 30 secondes
+            }, 1000); // Mise à jour toutes les secondes
+        }
+        
+        function showCorrection() {
+            document.getElementById("correction").style.display = "block";
+            document.getElementById("countdown").style.display = "none";
+            
+            // Feedback personnalisé
+            const selected = document.querySelector('input[name="q1"]:checked');
+            if (selected && selected.value === "A") {
+                document.getElementById("feedback").innerHTML = "Bravo, c'est correct ! 🎉";
+            } else {
+                document.getElementById("feedback").innerHTML = "Presque ! J'ai surtout travaillé sur l'analyse.";
+            }
         }
     </script>
 </body>
