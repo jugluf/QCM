@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Quiz sur mon stage</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px; }
+        h1 { color: #2c3e50; }
+        button { background: #3498db; color: white; border: none; padding: 10px 20px; cursor: pointer; }
+        button:hover { background: #2980b9; }
+    </style>
+</head>
 <body>
-  <h3>Question sur mon stage :</h3>
-  <p>Quelle tâche était la plus importante ?</p>
-  <form>
-    <input type="radio" name="qcm" id="r1"> <label for="r1">Analyse de données</label><br>
-    <input type="radio" name="qcm" id="r2"> <label for="r2">Présentation clients</label><br>
-    <input type="radio" name="qcm" id="r3"> <label for="r3">Gestion de projet</label>
-  </form>
-  <button onclick="alert('Merci pour votre réponse !')">Valider</button>
-  <style>body { font-family: Arial; text-align: center; }</style>
+    <h1>Question sur mon stage</h1>
+    <form id="quiz">
+        <p><strong>Quelle tâche était la plus importante ?</strong></p>
+        <input type="radio" name="q1" value="A"> Analyse de données<br>
+        <input type="radio" name="q1" value="B"> Présentation clients<br>
+        <input type="radio" name="q1" value="C"> Gestion de projet<br><br>
+
+        <button type="button" onclick="alert('Merci pour votre réponse !')">Valider</button>
+    </form>
 </body>
 </html>
