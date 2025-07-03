@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quiz sur mon stage</title>
+    <title>Quiz Correction des Pressions</title>
     <style>
         body { font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px; text-align: center; }
-        h1 { color: #2c3e50; }
         button { 
             background: #3498db; 
             color: white; 
@@ -26,27 +25,47 @@
             color: #e74c3c;
             margin: 10px 0;
         }
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+            text-align: left;
+            padding-left: 30px;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>Question sur mon stage</h1>
+    <div class="question">Quelle piste vous semble la bonne pour corriger les pressions ?</div>
     <form id="quiz">
-        <p><strong>Quelle tâche était la plus importante durant mon stage ?</strong></p>
-        <input type="radio" name="q1" id="r1" value="A"> 
-        <label for="r1">Analyse de données</label><br>
-        
-        <input type="radio" name="q1" id="r2" value="B"> 
-        <label for="r2">Présentation clients</label><br>
-        
-        <input type="radio" name="q1" id="r3" value="C"> 
-        <label for="r3">Gestion de projet</label><br><br>
+        <label>
+            <input type="radio" name="q1" value="A"> Vent nul = pression atmosphérique
+        </label>
+        <label>
+            <input type="radio" name="q1" value="B"> Courbe théorique autour d’un cylindre
+        </label>
+        <label>
+            <input type="radio" name="q1" value="C"> Corrélation pression-température : compensation thermique
+        </label>
+        <label>
+            <input type="radio" name="q1" value="D"> Calcul de la température interne de la cheminée
+        </label>
+        <label>
+            <input type="radio" name="q1" value="E"> Etalonnage en laboratoire + solveur d’offset
+        </label>
         
         <button type="button" onclick="validate()">Valider</button>
     </form>
 
-    <div id="countdown"></div> <!-- Compte à rebours -->
+    <div id="countdown"></div>
     <div id="correction">
-        <p><strong>Réponse correcte : <span id="bonne-reponse">Analyse de données</span></strong></p>
+        <p><strong>Réponse correcte : <span id="bonne-reponse">Etalonnage en laboratoire + solveur d’offset</span></strong></p>
         <p id="feedback"></p>
     </div>
 
@@ -77,7 +96,7 @@
                     clearInterval(countdownInterval);
                     showCorrection();
                 }
-            }, 1000); // Mise à jour toutes les secondes
+            }, 1000);
         }
         
         function showCorrection() {
@@ -86,10 +105,10 @@
             
             // Feedback personnalisé
             const selected = document.querySelector('input[name="q1"]:checked');
-            if (selected && selected.value === "A") {
-                document.getElementById("feedback").innerHTML = "Bravo, c'est correct ! 🎉";
+            if (selected && selected.value === "E") {
+                document.getElementById("feedback").innerHTML = "Exact ! L'étalonnage en labo est la méthode la plus précise.";
             } else {
-                document.getElementById("feedback").innerHTML = "Presque ! J'ai surtout travaillé sur l'analyse.";
+                document.getElementById("feedback").innerHTML = "Attention : les autres méthodes introduisent des incertitudes. La solution optimale est l'étalonnage.";
             }
         }
     </script>
