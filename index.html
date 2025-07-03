@@ -7,56 +7,66 @@
         body {
             font-family: Arial, sans-serif;
             max-width: 100%;
-            margin: 0;
-            padding: 20px;
+            margin: 0 auto;
+            padding: 15px;
             text-align: center;
-            font-size: 24px; /* Taille de police augmentée */
+            font-size: 18px; /* Taille réduite mais lisible */
+            line-height: 1.5;
         }
         button { 
             background: #3498db; 
             color: white; 
             border: none; 
-            padding: 15px 30px;
-            font-size: 24px;
+            padding: 12px 24px;
+            font-size: 18px;
             cursor: pointer; 
-            margin-top: 30px;
-            border-radius: 10px;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: block;
+            width: 80%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        button:hover { background: #2980b9; }
         #correction { 
             display: none; 
-            margin-top: 30px; 
-            padding: 20px; 
+            margin: 25px 0; 
+            padding: 15px; 
             background: #f8f9fa; 
-            border-left: 6px solid #3498db;
-            font-size: 26px;
+            border-left: 4px solid #3498db;
         }
         #countdown {
             font-weight: bold;
             color: #e74c3c;
-            margin: 20px 0;
-            font-size: 26px;
+            margin: 15px 0;
         }
         .question {
-            font-size: 28px;
-            margin-bottom: 30px;
+            font-size: 20px;
+            margin: 15px 0 25px 0;
             font-weight: bold;
-            line-height: 1.4;
         }
         label {
             display: block;
-            margin: 25px 0;
+            margin: 15px 0;
             text-align: left;
-            padding-left: 40px;
-            line-height: 1.5;
+            padding-left: 30px;
+            position: relative;
         }
         input[type="radio"] {
-            transform: scale(2); /* Boutons radio agrandis */
-            margin-right: 20px;
-            vertical-align: middle;
+            transform: scale(1.3);
+            position: absolute;
+            left: 0;
+            top: 3px;
         }
         .response-text {
+            margin-left: 10px;
+            display: inline-block;
+            width: calc(100% - 30px);
             vertical-align: middle;
+        }
+        #feedback {
+            font-weight: bold;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -95,10 +105,8 @@
 
     <script>
         function validate() {
-            // Désactive les éléments après validation
-            const radioButtons = document.querySelectorAll('input[type="radio"]');
-            radioButtons.forEach(input => input.disabled = true);
-            document.querySelector('button').disabled = true;
+            // Désactive les éléments
+            document.querySelectorAll('input, button').forEach(el => el.disabled = true);
             
             // Compte à rebours
             let timeLeft = 30;
@@ -108,7 +116,6 @@
             const countdownInterval = setInterval(() => {
                 timeLeft--;
                 countdownElement.textContent = `Correction dans ${timeLeft}s...`;
-                
                 if (timeLeft <= 0) {
                     clearInterval(countdownInterval);
                     showCorrection();
@@ -117,22 +124,21 @@
         }
         
         function showCorrection() {
-            const correctionDiv = document.getElementById("correction");
-            const feedbackElement = document.getElementById("feedback");
             const selected = document.querySelector('input[name="q1"]:checked');
+            const feedback = document.getElementById("feedback");
             
-            // Affichage minimaliste
-            if (selected && selected.value === "E") {
-                feedbackElement.innerHTML = "Exact ! 🎉";
-            } else {
-                feedbackElement.innerHTML = "Dommage !";
-            }
+            feedback.innerHTML = (selected && selected.value === "E") 
+                ? "Exact ! 🎉" 
+                : "Dommage !";
             
             document.getElementById("countdown").style.display = "none";
-            correctionDiv.style.display = "block";
+            document.getElementById("correction").style.display = "block";
             
-            // Scroll automatique vers la correction
-            correctionDiv.scrollIntoView({ behavior: 'smooth' });
+            // Scroll doux vers la correction
+            document.getElementById("correction").scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
         }
     </script>
 </body>
