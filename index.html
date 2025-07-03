@@ -1,43 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Correction des Pressions</title>
     <style>
-        body { font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px; text-align: center; }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 100%;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px; /* Taille de police augmentée */
+        }
         button { 
             background: #3498db; 
             color: white; 
             border: none; 
-            padding: 10px 20px; 
+            padding: 15px 30px;
+            font-size: 24px;
             cursor: pointer; 
-            margin-top: 20px;
+            margin-top: 30px;
+            border-radius: 10px;
         }
         button:hover { background: #2980b9; }
         #correction { 
             display: none; 
-            margin-top: 20px; 
-            padding: 10px; 
+            margin-top: 30px; 
+            padding: 20px; 
             background: #f8f9fa; 
-            border-left: 4px solid #3498db;
+            border-left: 6px solid #3498db;
+            font-size: 26px;
         }
         #countdown {
             font-weight: bold;
             color: #e74c3c;
-            margin: 10px 0;
+            margin: 20px 0;
+            font-size: 26px;
         }
         .question {
-            font-size: 1.2em;
-            margin-bottom: 20px;
+            font-size: 28px;
+            margin-bottom: 30px;
             font-weight: bold;
+            line-height: 1.4;
         }
         label {
             display: block;
-            margin: 10px 0;
+            margin: 25px 0;
             text-align: left;
-            padding-left: 30px;
+            padding-left: 40px;
+            line-height: 1.5;
         }
         input[type="radio"] {
-            margin-right: 10px;
+            transform: scale(2); /* Boutons radio agrandis */
+            margin-right: 20px;
+            vertical-align: middle;
+        }
+        .response-text {
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -45,19 +64,24 @@
     <div class="question">Quelle piste vous semble la bonne pour corriger les pressions ?</div>
     <form id="quiz">
         <label>
-            <input type="radio" name="q1" value="A"> Vent nul = pression atmosphérique
+            <input type="radio" name="q1" value="A">
+            <span class="response-text">Vent nul = pression atmosphérique</span>
         </label>
         <label>
-            <input type="radio" name="q1" value="B"> Courbe théorique autour d’un cylindre
+            <input type="radio" name="q1" value="B">
+            <span class="response-text">Courbe théorique autour d'un cylindre</span>
         </label>
         <label>
-            <input type="radio" name="q1" value="C"> Corrélation pression-température : compensation thermique
+            <input type="radio" name="q1" value="C">
+            <span class="response-text">Corrélation pression-température : compensation thermique</span>
         </label>
         <label>
-            <input type="radio" name="q1" value="D"> Calcul de la température interne de la cheminée
+            <input type="radio" name="q1" value="D">
+            <span class="response-text">Calcul de la température interne de la cheminée</span>
         </label>
         <label>
-            <input type="radio" name="q1" value="E"> Etalonnage en laboratoire + solveur d’offset
+            <input type="radio" name="q1" value="E">
+            <span class="response-text">Etalonnage en laboratoire + solveur d'offset</span>
         </label>
         
         <button type="button" onclick="validate()">Valider</button>
@@ -65,32 +89,25 @@
 
     <div id="countdown"></div>
     <div id="correction">
-        <p><strong>Réponse correcte : <span id="bonne-reponse">Etalonnage en laboratoire + solveur d’offset</span></strong></p>
         <p id="feedback"></p>
+        <p><strong>Réponse correcte : Etalonnage en laboratoire + solveur d'offset</strong></p>
     </div>
 
     <script>
         function validate() {
-            // Désactive les boutons après validation
+            // Désactive les éléments après validation
             const radioButtons = document.querySelectorAll('input[type="radio"]');
-            radioButtons.forEach(input => {
-                input.disabled = true;
-            });
-            
-            // Désactive le bouton Valider
+            radioButtons.forEach(input => input.disabled = true);
             document.querySelector('button').disabled = true;
             
-            // Affiche un message temporaire
-            alert("Merci pour votre réponse ! La correction s'affichera dans 30 secondes.");
-            
-            // Lance le compte à rebours
+            // Compte à rebours
             let timeLeft = 30;
             const countdownElement = document.getElementById("countdown");
-            countdownElement.textContent = `Correction dans... ${timeLeft} secondes`;
+            countdownElement.textContent = `Correction dans ${timeLeft}s...`;
             
             const countdownInterval = setInterval(() => {
                 timeLeft--;
-                countdownElement.textContent = `Correction dans... ${timeLeft} secondes`;
+                countdownElement.textContent = `Correction dans ${timeLeft}s...`;
                 
                 if (timeLeft <= 0) {
                     clearInterval(countdownInterval);
@@ -100,16 +117,22 @@
         }
         
         function showCorrection() {
-            document.getElementById("correction").style.display = "block";
-            document.getElementById("countdown").style.display = "none";
-            
-            // Feedback personnalisé
+            const correctionDiv = document.getElementById("correction");
+            const feedbackElement = document.getElementById("feedback");
             const selected = document.querySelector('input[name="q1"]:checked');
+            
+            // Affichage minimaliste
             if (selected && selected.value === "E") {
-                document.getElementById("feedback").innerHTML = "Exact ! L'étalonnage en labo est la méthode la plus précise.";
+                feedbackElement.innerHTML = "Exact ! 🎉";
             } else {
-                document.getElementById("feedback").innerHTML = "Attention : les autres méthodes introduisent des incertitudes. La solution optimale est l'étalonnage.";
+                feedbackElement.innerHTML = "Dommage !";
             }
+            
+            document.getElementById("countdown").style.display = "none";
+            correctionDiv.style.display = "block";
+            
+            // Scroll automatique vers la correction
+            correctionDiv.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
