@@ -3,21 +3,70 @@
 <head>
     <title>Quiz sur mon stage</title>
     <style>
-        body { font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px; }
+        body { font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px; text-align: center; }
         h1 { color: #2c3e50; }
-        button { background: #3498db; color: white; border: none; padding: 10px 20px; cursor: pointer; }
+        button { 
+            background: #3498db; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            margin-top: 20px;
+        }
         button:hover { background: #2980b9; }
+        #correction { 
+            display: none; 
+            margin-top: 20px; 
+            padding: 10px; 
+            background: #f8f9fa; 
+            border-left: 4px solid #3498db;
+        }
     </style>
 </head>
 <body>
     <h1>Question sur mon stage</h1>
     <form id="quiz">
-        <p><strong>Quelle tâche était la plus importante ?</strong></p>
-        <input type="radio" name="q1" value="A"> Analyse de données<br>
-        <input type="radio" name="q1" value="B"> Présentation clients<br>
-        <input type="radio" name="q1" value="C"> Gestion de projet<br><br>
-
-        <button type="button" onclick="alert('Merci pour votre réponse !')">Valider</button>
+        <p><strong>Quelle tâche était la plus importante durant mon stage ?</strong></p>
+        <input type="radio" name="q1" id="r1" value="A"> 
+        <label for="r1">Analyse de données</label><br>
+        
+        <input type="radio" name="q1" id="r2" value="B"> 
+        <label for="r2">Présentation clients</label><br>
+        
+        <input type="radio" name="q1" id="r3" value="C"> 
+        <label for="r3">Gestion de projet</label><br><br>
+        
+        <button type="button" onclick="validate()">Valider</button>
     </form>
+
+    <div id="correction">
+        <p><strong>Réponse correcte : <span id="bonne-reponse">Analyse de données</span></strong></p>
+        <p id="feedback"></p>
+    </div>
+
+    <script>
+        function validate() {
+            // Désactive les boutons après validation
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.disabled = true;
+            });
+            
+            // Affiche un message temporaire
+            alert("Merci pour votre réponse ! La correction s'affichera dans 30 secondes.");
+            
+            // Affiche la correction après 30 secondes
+            setTimeout(() => {
+                document.getElementById("correction").style.display = "block";
+                
+                // Affiche un feedback personnalisé selon la réponse
+                const selected = document.querySelector('input[name="q1"]:checked');
+                if (selected && selected.value === "A") {
+                    document.getElementById("feedback").innerHTML = "Bravo, c'est correct ! 🎉";
+                } else {
+                    document.getElementById("feedback").innerHTML = "Presque ! J'ai surtout travaillé sur l'analyse.";
+                }
+            }, 30000); // 30 000 ms = 30 secondes
+        }
+    </script>
 </body>
 </html>
